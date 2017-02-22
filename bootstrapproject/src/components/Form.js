@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
 
 export default React.createClass({
-	displaynName: 'Form',
+	displayName: 'Form',
+
 	propTypes: {
 		children: PropTypes.node,
 		values: PropTypes.object,
@@ -9,6 +10,24 @@ export default React.createClass({
 		reset: PropTypes.func,
 		onSubmit: PropTypes.func
 	},
+
+	childContextTypes: {
+		update: PropTypes.func,
+		reset: PropTypes.func,
+		submit: PropTypes.func,
+		values: PropTypes.object
+	},
+
+    getChildContext() {
+		return {
+			update: this.props.update,
+			reset: this.props.reset,
+			submit: this.submit,
+			values: {}  /* this one may come with initalState for the store, keep this in mind */
+		};
+	},
+
+
 	render() {
 		return (
 			<form>

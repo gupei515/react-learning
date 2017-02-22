@@ -3,7 +3,7 @@
  */
 
 import * as c from './constants';
-import assgin from 'lodash.assign';
+import assign from 'lodash.assign';
 
 
 const initialState = {
