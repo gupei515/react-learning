@@ -1,0 +1,11 @@
+webpack is a module builder, that can chunk all the dependencies, and sass on css, png on js to simply the resources and put into one file called bundle.js
+
+package.json is the place we define all the dependencies and running scripts, so this is the first start points to compile the project
+
+propTypes is a react way to implementing the type checks, its a very useful tool.
+
+the concept of context is that when ever you define in the child component some props as context, then the parent component can access it as its context through getChildContext(), which this, every child in this parent component will be able to access the context. 
+
+npm run build, is build the file from JXS to javascript
+
+when install locally, the executable normally is under node_modules/webpack, just use npm install to install anything locally, for global install, do npm install -g to install gloablly

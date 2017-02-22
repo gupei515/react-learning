@@ -1,0 +1,239 @@
+
+------how to start the application----------
+checkout payment -> first change the index.jsp at your local and then start shar -> change the files at your kairo,  and then run npm install, npm run start under .../src/webapp/UI, and start your kairo with debug, and you are done. if anything wrong , do it again and login out of shar instance and login back again.
+There are 1 shar environmental file and 4 kairo environmental files I need to change: application-dev.properties, application-uat.properties, configs, webpack.config.js.
+1. application-dev.properties   /..../main/resources
+# CUSTOM
+ssl.keypath = /home/ensofinancial.net/pgu/Downloads/kairo/treasuryapi/src/main/resources/conf/enso.jks
+
+2. application-uat.properties   /..../main/resources
+# CUSTOM
+ssl.keypath = treasuryapi/src/main/resources/conf/enso.jks
+
+3.config.js   UI/src/constants
+export const BASE_URL = 'http://localhost';
+// export const BASE_PORT = ':443';
+export const BASE_PORT = ':8443';
+// export const BASE_PORT = ':9002';
+export const BASE_NAMESPACE = '/v01';
+export const API_BASE = BASE_URL + BASE_PORT + BASE_NAMESPACE;
+
+4.webpack.config.js 
+
+  devtool: 'inline-source-map',
+  entry: [
+    // activate HMR for React
+    'react-hot-loader/patch',
+    // bundle the client for webpack-dev-server
+    // and connect to the provided endpoint
+    // 'webpack-dev-server/client?http://' + ip.address() + ':8080',
+    'webpack-dev-server/client?http://localhost:8080',    //////////////////this line over here
+    // bundle the client for hot reloading
+    // only- means to only hot reload for successful updates
+    'webpack/hot/only-dev-server',
+    // the entry point of our app
+    './src/index.js'
+  ],
+
+
+
+const { 
+      options,
+      funds,
+      paymentType,
+      selectedDrafts,
+      makeSelection,
+      performDraftAction,
+      detailClick,
+      getDraftDetails,
+      xlsUpload,
+      details,
+      isFetching
+} = this.props;
+
+-- create an action here 
+export const setDraftSelection    = createAction('DRAFT/SET_SELECTION')
+
+-- use to send data to store, store is the only place where data comes from 
+dispatch(action(data)) 
+
+--normally whenever there is an action, there are other actions following this action(success/failure/partialfailure) when reminding user is very important
+
+--empty object
+_EMPTY_OBJECT = {}
+
+--Pure component 
+everything is derived from PureComponent
+
+--connect a Reat component to a Redux store
+connect a react component to a Redux Store, connect everything together
+export default connect(mapStateToProps, mapDispatchToProps)(Draft);
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    detailClick: bindActionCreators(UIactions.tableDetailClick, dispatch),
+    tableCreate:   bindActionCreators(UIactions.tableCreate, dispatch),
+
+    initializeNewPaymentPage:  bindActionCreators(actions.initializeNewPaymentPage, dispatch),
+    togglePinPanel:            bindActionCreators(actions.togglePinPanel, dispatch),
+    createPaymentRequest:      bindActionCreators(actions.createPaymentRequest, dispatch),
+    makeSelection:             bindActionCreators(actions.makeSelection, dispatch),
+    performDraftAction:        bindActionCreators(actions.performDraftAction, dispatch),
+    switchPaymentTypes:        bindActionCreators(actions.switchPaymentTypes, dispatch),
+    getDraftDetails:           bindActionCreators(actions.getDraftDetails, dispatch),
+    closeErrorMessage:         bindActionCreators(actions.closeErrorMessage, dispatch),
+    xlsUpload:                 bindActionCreators(() => {}, dispatch)
+  }
+}
+
+const mapStateToProps = ({ Account, NewPayment, UI, Fund }) => {
+  const table = UI.tables[NewPayment.tableId];
+  return {
+    activeRowIndex: table ? table.activeRowIndex : null,
+    funds: Fund,
+    isFetching: UI.isFetching,
+    canSubmit: selectors.canSubmit(NewPayment),
+    details: Account.details,
+
+    tableId:        NewPayment.tableId,
+    paymentTypes:   NewPayment.paymentTypes,
+    rows:           NewPayment.rows,
+    submitError:    NewPayment.submitError,
+    error:          NewPayment.error,
+    options:        NewPayment.options,
+    paymentType:    NewPayment.paymentTypes.filter(opt => opt.selected)[0].value,
+    selectedDrafts: NewPayment.selectedDrafts,
+    showPinModal:   NewPayment.showPinModal
+  }
+}
+
+-- for example, initialize
+-- index.js
+componentDidMount() {
+    this.props.tableCreate(this.props.tableId);
+    this.props.initializeNewPaymentPage();
+  }
+
+-- reducers.js
+export function initializeNewPaymentPage() { 
+  return (dispatch, getState) => {
+    dispatch(actions.createBlankDraft());
+    dispatch(initialize());
+  }
+}
+
+
+-- endpoints is defining the connection with java
+
+delete,
+
+UI -> call delete function -> java(i.e. PaymentDraftHandler) -> after return, go through the promise chain, dispatch, dispatch -> 
+
+
+ return (dispatch, getState, api) => {
+    const rowIndex = getState().NewPayment.rows.findIndex(x => x.id === draftId);
+    dispatch(actions.deleteDraft());
+    return api.deleteDraft(draftId)
+      .then(api.handleErrors)
+      .then(data => {
+        dispatch(actions.deleteDraftSuccess(draftId));
+        if (getState().UI.tables.NEW_PAYMENT.activeRowIndex === rowIndex) {
+          dispatch(actions.tableDetailClick({
+            tableId: 'NEW_PAYMENT',
+            rowIndex, cellIndex: 0
+          }));
+        }
+      })
+      .catch(err => dispatch(actions.deleteDraftFailure({ 
+        draftId, 
+        error: "There was an error deleting the selected payment draft"
+      })));
+  }
+
+import { combineActions, handleActions } from 'redux-actions';
+create combinActions, and handleActions
+
+-- mapSatateToProps--
+to get the state from redux to UI (readonly )
+
+-- mapDispatchToProps-- 
+to disPatch the action from UI to redux
+so that the store would aware of the attachment between the state and the component through the dispatch. amazing stuff!
+
+--- check this out!!!!!!!!!!!
+xport default class LoginContainer extends PureComponent {
+
+  render() {
+
+     const {
+         user
+     } = this.props;
+
+    return (
+      <div ref='loginContainer'>
+        {newUser
+          ? <PinForm />
+          : <ReEnterNewPin />
+        }
+        <TermsAndConditions />
+      </div>
+    )
+  }
+}
+
+------- different between state and props ----------
+
+down vote
+accepted
+Props and state are related. The state of one component will often become the props of a child component. Props are passed to the child within the render method of the parent as the second argument to React.createElement() or, if you're using JSX, the more familiar tag attributes.
+
+<MyChild name={this.state.childsName} />
+The parent's state value of childsName becomes the child's this.props.name. From the child's perspective, the name prop is immutable. If it needs to be changed, the parent should just change its internal state:
+
+this.setState({ childsName: 'New name' });
+and React will propagate it to the child for you. A natural follow-on question is: what if the child needs to change its name prop? This is usually done through child events and parent callbacks. The child might expose an event called, for example, onNameChanged. The parent would then subscribe to the event by passing a callback handler.
+
+<MyChild name={this.state.childsName} onNameChanged={this.handleName} />
+The child would pass it's requested new name as an argument to the event callback by calling, e.g., this.props.onNameChanged('New name'), and the parent would use the name in the event handler to update its state.
+
+handleName: function(newName) {
+   this.setState({ childsName: newName });
+}
+
+
+------------------------------
+Instance Properties
+props
+this.props contains the props that were defined by the caller of this component. See Components and Props for an introduction to props.
+
+In particular, this.props.children is a special prop, typically defined by the child tags in the JSX expression rather than in the tag itself.
+
+state
+The state contains data specific to this component that may change over time. The state is user-defined, and it should be a plain JavaScript object.
+
+If you don't use it in render(), it shouldn't be on the state. For example, you can put timer IDs directly on the instance.
+
+See State and Lifecycle for more information about the state.
+
+Never mutate this.state directly, as calling setState() afterwards may replace the mutation you made. Treat this.state as if it were immutable.
+
+--- this is very important --- and remember
+this.props.children is a special prop
+
+--- during the development of the first component -- 
+I have found this: props, are something that you are defined for the component, and when you return you return those ones that are is pure dom attributes, those attributes are using states, which essentially changed through defined events, and react will take care of the state transite through mount and unmount or whatever.
+how to define all the keys through object => please see here let {isValid} = this.state;
+
+if its just one element you dont need to use </> at the end of the element
+
+-------------
+this.props.initializeNewPaymentPage();
+
+------------
+i.e. deleteDraft
+performDraftAction -> value == 'distory' or 'select' if destory, dispatch(deleteDraft(draftId));
+
+ui, using mapDispatchToProps to match mapStateToProps, onClick: performDraftAction => go to the store to performDraftAction, and then dispatch action, then define action
+
+
