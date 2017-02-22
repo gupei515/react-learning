@@ -1,0 +1,22 @@
+import React, {PropTypes} from 'react';
+
+export default React.createClass({
+	displaynName: 'Form',
+	propTypes: {
+		children: PropTypes.node,
+		values: PropTypes.object,
+		update: PropTypes.func,
+		reset: PropTypes.func,
+		onSubmit: PropTypes.func
+	},
+	render() {
+		return (
+			<form>
+				{this.props.children}
+			</form>
+		);
+	}
+
+
+}); 
+
