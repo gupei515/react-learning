@@ -10,7 +10,7 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import Form from  './components/Form';
 import * as actions from './action';
-import store from './store';
+import store from './reducer';
 /*
 import injectTapEventPlugin  from 'react-tap-event-plugin';
 
@@ -27,6 +27,8 @@ export default props  => (
         <SmartForm {...props}/>
     </Provider>
 );
+
+
 
 
 export {default as Text} from './components/Text';

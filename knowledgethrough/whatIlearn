@@ -9,3 +9,9 @@ the concept of context is that when ever you define in the child component some 
 npm run build, is build the file from JXS to javascript
 
 when install locally, the executable normally is under node_modules/webpack, just use npm install to install anything locally, for global install, do npm install -g to install gloablly
+
+write -> understand it -> remember  and repeat it again
+
+store at redux is everything, its not the same at Extjs, which is just a data list to restore the records, at redux, store is a place to hold state, and dispatch actions (actions, is list of activities and the corresponding payload)
+
+
