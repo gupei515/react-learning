@@ -10,7 +10,7 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import Form from  './components/Form';
 import * as actions from './action';
-import store from './reducer';
+import reducer from './reducer';
 /*
 import injectTapEventPlugin  from 'react-tap-event-plugin';
 
@@ -23,7 +23,7 @@ const SmartForm = connect(state => state, actions)(Form);
 const reduxMiddleware = applyMiddleware(thunk, createLogger());
 
 export default props  => (
-    <Provider store={compose(reduxMiddleware)(createStore)(store)}>
+    <Provider store={compose(reduxMiddleware)(createStore)(reducer)}>
         <SmartForm {...props}/>
     </Provider>
 );

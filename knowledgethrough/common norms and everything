@@ -237,3 +237,6 @@ performDraftAction -> value == 'distory' or 'select' if destory, dispatch(delete
 ui, using mapDispatchToProps to match mapStateToProps, onClick: performDraftAction => go to the store to performDraftAction, and then dispatch action, then define action
 
 
+remember this, store.dispatch(action)
+
+

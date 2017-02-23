@@ -12,6 +12,6 @@ when install locally, the executable normally is under node_modules/webpack, jus
 
 write -> understand it -> remember  and repeat it again
 
-store at redux is everything, its not the same at Extjs, which is just a data list to restore the records, at redux, store is a place to hold state, and dispatch actions (actions, is list of activities and the corresponding payload)
+store at redux is everything, its not the same at Extjs, which is just a data list to restore the records, at redux, store is a place to hold state, and dispatch actions (actions, is list of activities with payload).  
 
 

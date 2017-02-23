@@ -21566,9 +21566,9 @@
 
 	var actions = _interopRequireWildcard(_action);
 
-	var _store = __webpack_require__(341);
+	var _reducer = __webpack_require__(341);
 
-	var _store2 = _interopRequireDefault(_store);
+	var _reducer2 = _interopRequireDefault(_reducer);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21592,7 +21592,7 @@
 	exports.default = function (props) {
 	    return _react2.default.createElement(
 	        _reactRedux.Provider,
-	        { store: (0, _redux.compose)(reduxMiddleware)(_redux.createStore)(_store2.default) },
+	        { store: (0, _redux.compose)(reduxMiddleware)(_redux.createStore)(_reducer2.default) },
 	        _react2.default.createElement(SmartForm, props)
 	    );
 	};
