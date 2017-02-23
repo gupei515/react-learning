@@ -239,4 +239,61 @@ ui, using mapDispatchToProps to match mapStateToProps, onClick: performDraftActi
 
 remember this, store.dispatch(action)
 
+create store: store.createStore(reducer)
+
+----------------
+we user bindActionCreators to wrap our action creators with a dispatch call, the goal is to pass actions creators to our other components without giving them the dispatch object
+
+----------------
+this.props.dispatch vs this.store.dispatch
+Per the Redux FAQ question at http://redux.js.org/docs/FAQ.html#react-props-dispatch, this.props.dispatch is available by default if you do not supply your own mapDispatchToProps function. If you do supply a mapDispatchToProps function, you are responsible for returning a prop named dispatch yourself.
+
+This one is very helpful to understand https://github.com/reactjs/redux/issues/1676 dispatch promise
+
+Or, you can make sure your action creators are pre-bound using Redux's bindActionCreators utility, and skip having to worry about using this.props.dispatch in your component.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+Dan Abramov, best http://stackoverflow.com/questions/35411423/how-to-dispatch-a-redux-action-with-a-timeout/35415559#35415559
+this is the best explaination so far 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+apply the middle thunk here 
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk)
+)
+
+// It still recognizes plain object actions
+store.dispatch({ type: 'INCREMENT' })
+
+// But with thunk middleware, it also recognizes functions
+store.dispatch(function (dispatch) {
+  // ... which themselves may dispatch many times
+  dispatch({ type: 'INCREMENT' })
+  dispatch({ type: 'INCREMENT' })
+  dispatch({ type: 'INCREMENT' })
+
+  setTimeout(() => {
+    // ... even asynchronously!
+    dispatch({ type: 'DECREMENT' })
+  }, 1000)
+})
+-------------------------------------------
+http://stackoverflow.com/questions/33221634/why-use-this-props-dispatch-rather-than-store-dispatch-directly-in-redux
+27
+down vote
+accepted
+In universal apps, you'll want a different store instance on every request. If you just export store as a singleton from some module, you'll have a hard time adding server rendering.
+
+This is why we never encourage singleton store in the docs, and always encourage you to use <Provider> to pass it down the hierarchy via React context. This makes store available to the consuming components without making it a singleton.
+
+As for why connect() from React Redux passes dispatch as a prop instead of store itself—it's because you don't really need store itself in the connected components. Subscription and reading state is done by connect() so you'll only ever need dispatch() in components.
+
+Top level we use store to store the data, for the child components, we use partially store's key to set the props for the child component
+action creators are just bunch of actions bundled together to create actions, with that been said, when we do import * as actionCreator from ....., we created a small scope of the functions to run, sometimes we also inject the actions creators as props.
+
+----------------------------------------------
+The best tutorial for 
 
